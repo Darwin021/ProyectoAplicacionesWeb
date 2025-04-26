@@ -1,0 +1,97 @@
+/* Centrar el contenedor */
+.container {
+    width: 80%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Centrar el título y la imagen */
+.titulo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.titulo img {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    width: 170px;
+    height: auto;
+}
+
+.titulo h1 {
+    margin: 0;
+}
+
+/* Alinear los campos del formulario */
+form div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Estilos para las etiquetas */
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Inputs y selects */
+input, select {
+    flex: 1; /* Para que ocupen el mismo espacio */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Asegurar que los selects no se estiren demasiado */
+select {
+    max-width: 250px;
+}
+
+/* Centrar el botón */
+.boton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.boton_registro {
+    padding: 10px 20px;
+    background-color: #4ffa00;
+    color: black;
+    font-weight: bold;
+    border: 2px solid black;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.boton_registro:hover {
+    background-color:#4ffa00;
+}
+
+/* Estilos para el QR y código de barras */
+.qr-barcode {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Asegurar que el código QR y el código de barras tengan tamaños adecuados */
+.qr-barcode img {
+    width: 150px;
+    height: auto;
+}
+
+/* Estilo para los requerimientos */
+.requerimientos {
+    font-size: 14px;
+    margin-top: 20px;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Tickets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos-admin.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.17/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav style="background-color: #333; padding: 10px;">
+        <a href="{{ url_for('Mostrar_tickets') }}" style="color: white; margin-right: 15px;">Inicio</a>
+        <a href="{{ url_for('dashboard') }}" style="color: white;">Dashboard</a>
+        <a href="{{ url_for('logout') }}" style="color: white; margin-left: 15px;">Cerrar sesión</a>
+    </nav>
+
+    <div class="container">
+        <h2>Administración de Tickets</h2>
+
+        <form action="{{ url_for('buscar_tickets') }}" method="GET" class="form-inline">
+            <input type="text" name="query" placeholder="Buscar por CURP, Nombre, Apellido..." value="{{ request.args.get('query', '') }}" style="margin-bottom: 15px;">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Turno</th>
+                    <th>CURP</th>
+                    <th>Nombre Completo</th>
+                    <th>Celular</th>
+                    <th>Correo</th>
+                    <th>Nivel</th>
+                    <th>Municipio</th>
+                    <th>Asunto</th>
+                    <th>Estatus</th>
+                    <th>Fecha Creación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tickets %}
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ ticket.Turno }}</td>
+                        <td>{{ ticket.Tutor }}</td>
+                        <td>{{ ticket.NombreCompleto }}</td>
+                        <td>{{ ticket.Celular }}</td>
+                        <td>{{ ticket.Correo }}</td>
+                        <td>{{ ticket.Nivel }}</td>
+                        <td>{{ ticket.Municipio }}</td>
+                        <td>{{ ticket.Asunto }}</td>
+                        <td>{{ ticket.Estatus }}</td>
+                        <td>{{ ticket.FechaCreacion }}</td> <!-- Ya viene como string desde Python -->
+                        <td>
+                            <form id="eliminar-form-{{ ticket.Turno }}" action="{{ url_for('eliminar_ticket', ticket_id=ticket.Turno) }}" method="POST" style="display:inline;">
+                                <button type="button" class="btn btn-danger" onclick="confirmarEliminar({{ ticket.Turno }})">Eliminar</button>
+                            </form>
+                            <a href="{{ url_for('modificar_ticket', ticket_id=ticket.Turno) }}" class="btn btn-warning">Modificar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="11">No hay tickets disponibles</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.17/dist/sweetalert2.all.min.js"></script>
+</body>
+</html>

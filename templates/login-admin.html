@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login-admin.css') }}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="/">Inicio</a>
+    </div>
+
+    <!-- Login Section -->
+    <div class="login-container">
+        <div class="login-form">
+            <!-- Imagen del "monito" -->
+            <div class="login-image">
+                <img src="{{ url_for('static', filename='img/usuario.png') }}" alt="Monito" width="100" height="100">
+            </div>
+
+            <h2>Login Administrador</h2>
+            <form action="/admin-login" method="post">
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
+
+                <div class="g-recaptcha" data-sitekey="6LcrigorAAAAAEfww108_-FlGJbxM-fDvMqeaD3V"></div>
+
+                <button type="submit">Iniciar sesión</button>
+            </form>
+        </div>
+    </div>
+    
+</body>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="{{ url_for('static', filename='js/sweetalert2.js') }}"></script>
+</html>

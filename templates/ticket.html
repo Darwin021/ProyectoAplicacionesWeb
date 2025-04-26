@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket de Turno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <script src="{{ url_for('static', filename='js/sweetalert2.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/validaTicket.js') }}"></script>
+    <style>
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar-right {
+            float: right;
+        }
+
+        .boton_registro, .boton_limpiar {
+            padding: 10px 20px;
+            margin-top: 10px;
+            margin-left: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .boton_limpiar {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+
+        .boton_limpiar:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head> 
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/login-admin" class="navbar-right">Apartado de Admins</a>
+    </div>
+
+    <div class="cuadro" style="border: 1px solid black">
+        <div class="container">
+            <form name="registro" method="post" action="{{ url_for('add_aspirante') }}" onsubmit="return validaTicket()">
+                <div class="titulo">
+                    <img src="/static/img/logo.png" alt="Secretaria de Educación" width="5900px" height="5000px">
+                    <h1>Ticket de Turno</h1>
+                </div>
+                <div>
+                    <label>Nombre completo de quien realizará el trámite:</label>
+                    <input type="text" name="nombre_completo" id="nombre_completo" value="{{ tutor }}">
+
+                    <label>CURP:</label>
+                    <input type="text" name="curp" id="curp" value="{{ curp }}"><br><br>
+                </div>
+
+                <div>
+                    <label>Nombre:</label>
+                    <input type="text" name="nombres" id="nombres" value="{{ nombre }}">
+
+                    <label>Paterno:</label>
+                    <input type="text" name="paterno" id="paterno" value="{{ paterno }}">
+
+                    <label>Materno:</label>
+                    <input type="text" name="materno" id="materno" value="{{ materno }}"><br><br>
+                </div>
+
+                <div>
+                    <label>Teléfono:</label>
+                    <input type="text" name="telefono" id="telefono" value="{{ telefono }}">
+
+                    <label>Celular:</label>
+                    <input type="text" name="celular" id="celular" value="{{ celular }}">
+
+                    <label>Correo:</label>
+                    <input type="text" name="correo" id="correo" value="{{ correo }}"><br><br>
+                </div>
+
+                <div class="nivel">
+                    <label>¿Nivel al que desea ingresar o que ya cursa el alumno?</label>
+                    <select name="nivel" id="nivel">
+                        <option value="0" {% if nivel == "0" %}selected{% endif %}>Seleccione un nivel</option>
+                        <option value="1" {% if nivel == "1" %}selected{% endif %}>Primaria</option>
+                        <option value="2" {% if nivel == "2" %}selected{% endif %}>Secundaria</option>
+                        <option value="3" {% if nivel == "3" %}selected{% endif %}>Preparatoria</option>
+                        <option value="4" {% if nivel == "4" %}selected{% endif %}>Universidad</option>
+                    </select><br><br>
+                </div>
+
+                <div class="municipio">
+                    <label>Municipio donde desea que estudie el alumno:</label>
+                    <select name="municipio" id="municipio">
+                        <option value="0" {% if municipio == "0" %}selected{% endif %}>Seleccione un municipio</option>
+                        <option value="1" {% if municipio == "1" %}selected{% endif %}>Arteaga</option>
+                        <option value="2" {% if municipio == "2" %}selected{% endif %}>Saltillo</option>
+                        <option value="3" {% if municipio == "3" %}selected{% endif %}>Piedras Negras</option>
+                    </select><br><br>
+                </div>
+
+                <div class="asunto">
+                    <label>Seleccione el asunto que va a tratar:</label>
+                    <select name="asunto" id="asunto">
+                        <option value="0" {% if asunto == "0" %}selected{% endif %}>Seleccione un asunto</option>
+                        <option value="1" {% if asunto == "1" %}selected{% endif %}>Inscripción</option>
+                        <option value="2" {% if asunto == "2" %}selected{% endif %}>Reinscripción</option>
+                        <option value="3" {% if asunto == "3" %}selected{% endif %}>Cambio de escuela</option>
+                    </select><br><br>
+                </div>
+
+                <div class="boton">
+                    <input class="boton_registro" type="submit" value="Generar Ticket">
+                    <button type="button" class="boton_limpiar" onclick="limpiarFormulario()">Limpiar Formulario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- BOTÓN DE CONSULTAR TICKET -->
+    <div style="text-align: center; margin-top: 40px;">
+        <p>¿Quieres consultar tu ticket?</p>
+        <button onclick="window.location.href='/consultar_ticket'" style="padding: 10px 20px; font-size: 16px;">Haz clic aquí para buscar tu ticket</button>
+    </div>
+
+    <script>
+        function limpiarFormulario() {
+            document.querySelectorAll("input[type='text']").forEach(input => input.value = "");
+            document.querySelectorAll("select").forEach(select => select.selectedIndex = 0);
+        }
+    </script>
+</body>
+</html>
+
+
+

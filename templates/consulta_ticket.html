@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Ticket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/consulta_ticket.css') }}">
+</head>
+<body>
+
+    <!-- Barra de navegación -->
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/consultar_ticket">Consultar Ticket</a>
+    </div>
+
+    <div class="container">
+        <h2>Consulta de Ticket</h2>
+
+        <!-- Formulario para ingresar CURP y Turno -->
+        <form id="ticketForm" class="center">
+            <label for="curp">CURP:</label>
+            <input type="text" id="curp" name="curp" required>
+            <label for="turno">Turno:</label>
+            <input type="text" id="turno" name="turno" required>
+            <button type="submit">Consultar</button>
+            <button type="button" id="modificarBtn" onclick="redirigirModificar()" disabled class="form-buttons">Modificar Ticket</button>
+        </form>
+
+        <!-- Tabla donde se mostrarán los datos del ticket -->
+        <div id="ticketInfo" style="display: none;">
+            <table>
+                <tr><th>Turno</th><td id="turnoValue"></td></tr>
+                <tr><th>CURP</th><td id="curpValue"></td></tr>
+                <tr><th>Nombre</th><td id="nombreValue"></td></tr>
+                <tr><th>Celular</th><td id="celularValue"></td></tr>
+                <tr><th>Correo</th><td id="correoValue"></td></tr>
+                <tr><th>Nivel</th><td id="nivelValue"></td></tr>
+                <tr><th>Municipio</th><td id="municipioValue"></td></tr>
+                <tr><th>Asunto</th><td id="asuntoValue"></td></tr>
+                <tr><th>Estatus</th><td id="estatusValue"></td></tr>
+                <tr><th>Fecha</th><td id="fechaValue"></td></tr>
+            </table>
+        </div>
+
+        <!-- Mensaje en caso de error -->
+        <div id="errorMessage" style="display: none;">
+            <p>No se encontró el ticket o hubo un error en la consulta.</p>
+        </div>
+    </div>
+
+    <script>
+        let curpGlobal = '';
+        let turnoGlobal = '';
+
+        // Función para manejar la consulta de ticket
+        document.getElementById('ticketForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Obtener los valores del formulario
+            var curp = document.getElementById('curp').value;
+            var turno = document.getElementById('turno').value;
+
+            // Guardar globalmente para redirección
+            curpGlobal = curp;
+            turnoGlobal = turno;
+
+            // Realizar la solicitud a la API de consulta de tickets
+            fetch('/api/consultar_ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ curp: curp, turno: turno })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('ticketInfo').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('modificarBtn').disabled = true;
+                } else {
+                    document.getElementById('ticketInfo').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    document.getElementById('modificarBtn').disabled = false;
+
+                    // Mostrar datos en la tabla
+                    document.getElementById('turnoValue').innerText = data.turno;
+                    document.getElementById('curpValue').innerText = data.curp;
+                    document.getElementById('nombreValue').innerText = data.nombre + ' ' + data.paterno + ' ' + data.materno;
+                    document.getElementById('celularValue').innerText = data.celular;
+                    document.getElementById('correoValue').innerText = data.correo;
+                    document.getElementById('nivelValue').innerText = data.nivel;
+                    document.getElementById('municipioValue').innerText = data.municipio;
+                    document.getElementById('asuntoValue').innerText = data.asunto;
+                    document.getElementById('estatusValue').innerText = data.estatus;
+                    document.getElementById('fechaValue').innerText = data.fecha;
+                }
+            })
+            .catch(error => {
+                document.getElementById('ticketInfo').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('modificarBtn').disabled = true;
+            });
+        });
+
+        function redirigirModificar() {
+            if (curpGlobal && turnoGlobal) {
+                // Reemplaza con la URL real de tu ruta de modificación
+                window.location.href = `/modificar_ticket_curp?curp=${curpGlobal}&turno=${turnoGlobal}`;
+            }
+        }
+    </script>
+</body>
+</html>
+

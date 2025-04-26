@@ -1,0 +1,113 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fa;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 20px;
+    color: #000;
+}
+
+.center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Estilos para la barra de navegación */
+.navbar {
+    background-color: #000;
+    overflow: hidden;
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 14px 20px;
+    margin-right: 15px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.navbar a:hover {
+    background-color: #333;
+    border-radius: 5px;
+}
+
+/* Estilos para el formulario */
+.form-buttons {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#modificarBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+#modificarBtn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+button {
+    background-color: #000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #333;
+}
+
+/* Estilos para la tabla */
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #000;
+    color: white;
+}
+
+/* Estilos para mensajes de error */
+#errorMessage {
+    display: none;
+    text-align: center;
+    color: red;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* Estilos para el contenedor de la página */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}

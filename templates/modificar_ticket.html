@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Ticket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos-modificar.css') }}">
+</head>
+<body>
+    <nav style="background-color: #333; padding: 10px;">
+        <a href="{{ url_for('Mostrar_tickets') }}" style="color: white; margin-right: 15px;">Inicio</a>
+        <a href="{{ url_for('dashboard') }}" style="color: white;">Dashboard</a>
+        <a href="{{ url_for('logout') }}" style="color: white; margin-left: 15px;">Cerrar sesión</a>
+    </nav>
+    <div class="container">
+        <h2>Modificar Ticket</h2>
+        <form method="POST" class="form-modificar">
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" name="Nombre" value="{{ ticket.usuario.Nombre }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Apellido Paterno:</label>
+                <input type="text" name="Paterno" value="{{ ticket.usuario.Paterno }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Apellido Materno:</label>
+                <input type="text" name="Materno" value="{{ ticket.usuario.Materno }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono:</label>
+                <input type="text" name="Telefono" value="{{ ticket.usuario.Telefono }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Celular:</label>
+                <input type="text" name="Celular" value="{{ ticket.usuario.Celular }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Correo:</label>
+                <input type="email" name="Correo" value="{{ ticket.usuario.Correo }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nivel:</label>
+                <select name="NivelID" required>
+                    {% for nivel in niveles %}
+                        <option value="{{ nivel.NivelID }}" {% if nivel.NivelID == ticket.NivelID %} selected {% endif %}>{{ nivel.NombreNivel }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Municipio:</label>
+                <select name="MunicipioID" required>
+                    {% for municipio in municipios %}
+                        <option value="{{ municipio.MunicipioID }}" {% if municipio.MunicipioID == ticket.MunicipioID %} selected {% endif %}>{{ municipio.NombreMunicipio }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Asunto:</label>
+                <select name="AsuntoID" required>
+                    {% for asunto in asuntos %}
+                        <option value="{{ asunto.AsuntoID }}" {% if asunto.AsuntoID == ticket.AsuntoID %} selected {% endif %}>{{ asunto.NombreAsunto }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Estatus:</label>
+                <select name="Estatus" required>
+                    <option value="Pendiente" {% if ticket.Estatus == 'Pendiente' %} selected {% endif %}>Pendiente</option>
+                    <option value="Resuelto" {% if ticket.Estatus == 'Resuelto' %} selected {% endif %}>Resuelto</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">Guardar Cambios</button>
+        </form>
+    </div>
+</body>
+</html>

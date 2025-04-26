@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard de Estadísticas</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .filter-label {
+            margin-right: 10px;
+        }
+        .chart-container {
+            width: 60%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <nav style="background-color: #333; padding: 10px;">
+        <a href="{{ url_for('Mostrar_tickets') }}" style="color: white; margin-right: 15px;">Inicio</a>
+        <a href="{{ url_for('dashboard') }}" style="color: white;">Dashboard</a>
+        <a href="{{ url_for('logout') }}" style="color: white; margin-left: 15px;">Cerrar sesión</a>
+    </nav>
+    <div class="container">
+        <h1>Dashboard de Tickets</h1>
+
+        <!-- Filtros -->
+        <div class="filters">
+            <form method="get">
+                <div>
+                    <label class="filter-label" for="municipio">Municipio:</label>
+                    <select name="municipio" id="municipio">
+                        <option value="">Todos</option>
+                        {% for municipio in municipios %}
+                            <option value="{{ municipio.MunicipioID }}" {% if municipio.MunicipioID == request.args.get('municipio') %} selected {% endif %}>{{ municipio.NombreMunicipio }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Filtrar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Gráfico -->
+        <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+        </div>
+    </div>
+    <script>
+        // Asegúrate de que 'labels' y 'counts' son arrays válidos al ser pasados a JavaScript.
+        const chartLabels = {{ labels | safe }};
+        const chartCounts = {{ counts | safe }};
+        
+        // Verifica que las variables contienen datos antes de usarlas
+        console.log("Labels:", chartLabels);
+        console.log("Counts:", chartCounts);
+
+        if (Array.isArray(chartLabels) && Array.isArray(chartCounts) && chartLabels.length === chartCounts.length) {
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,  // Usa el nombre nuevo
+                    datasets: [{
+                        label: 'Pendiente',
+                        data: chartCounts,  // Usa el nombre nuevo
+                        backgroundColor: ['#ff6384', '#36a2eb'],
+                        borderColor: ['#ff6384', '#36a2eb'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.raw + ' Tickets';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            console.error("Los datos de 'labels' o 'counts' no son válidos o no tienen la misma longitud.");
+        }
+    </script>    
+</body>
+</html>
+

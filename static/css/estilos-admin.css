@@ -1,0 +1,127 @@
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 1rem;
+}
+
+/* Navbar */
+nav {
+    background-color: #333;
+    padding: 10px;
+}
+
+nav a {
+    color: white;
+    margin-right: 15px;
+    text-decoration: none;
+}
+
+/* Título */
+h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Barra de búsqueda */
+form {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+input[type="text"] {
+    padding: 8px 10px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+input[type="submit"] {
+    padding: 8px 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+}
+
+/* Contenedor tabla scroll horizontal */
+.table-container {
+    overflow-x: auto;
+}
+
+/* Tabla de admins */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 1rem;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+table th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+/* Dashboard */
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.chart-box {
+    flex: 1 1 calc(33.333% - 1rem);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+canvas {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .chart-box {
+        flex: 1 1 100%;
+    }
+
+    table {
+        font-size: 0.75rem;
+    }
+
+    table th, table td {
+        padding: 6px;
+    }
+
+    input[type="text"] {
+        width: 180px;
+    }
+}
