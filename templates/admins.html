@@ -64,12 +64,15 @@
                         <td>{{ ticket.Municipio }}</td>
                         <td>{{ ticket.Asunto }}</td>
                         <td>{{ ticket.Estatus }}</td>
-                        <td>{{ ticket.FechaCreacion }}</td> <!-- Ya viene como string desde Python -->
+                        <td>{{ ticket.FechaCreacion }}</td>
                         <td>
-                            <form id="eliminar-form-{{ ticket.Turno }}" action="{{ url_for('eliminar_ticket', ticket_id=ticket.Turno) }}" method="POST" style="display:inline;">
+                            <!-- Campo oculto con el TicketID -->
+                            <input type="hidden" name="TicketID" value="{{ ticket.TicketID }}">
+                            
+                            <form id="eliminar-form-{{ ticket.Turno }}" action="{{ url_for('eliminar_ticket', ticket_id=ticket.TicketID) }}" method="POST" style="display:inline;">
                                 <button type="button" class="btn btn-danger" onclick="confirmarEliminar({{ ticket.Turno }})">Eliminar</button>
                             </form>
-                            <a href="{{ url_for('modificar_ticket', ticket_id=ticket.Turno) }}" class="btn btn-warning">Modificar</a>
+                            <a href="{{ url_for('modificar_ticket', ticket_id=ticket.TicketID) }}" class="btn btn-warning">Modificar</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -79,6 +82,25 @@
             </tbody>
         </table>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.17/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function confirmarEliminar(turno) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Esta acción no se puede deshacer!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('eliminar-form-' + turno).submit();
+                }
+            });
+        }
+    </script>
 </body>
 </html>

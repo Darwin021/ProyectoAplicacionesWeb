@@ -118,15 +118,18 @@ def add_aspirante():
 
 @app.route('/eliminar-ticket/<int:ticket_id>', methods=['POST'])
 def eliminar_ticket(ticket_id):
-    try:
-        admin_crud = AdminCRUD()
-        admin_crud.eliminar_ticket_por_id(ticket_id)
-        admin_crud.db.session.close()
-        flash("✅ Ticket eliminado correctamente", "success")
-    except Exception as e:
-        flash(f"❌ Error al eliminar el ticket: {str(e)}", "error")
+    if "admin" not in session:
+        return redirect(url_for("mostrar_login_admin"))
     
+    admin_crud = AdminCRUD()
+    if admin_crud.eliminar_ticket_por_id(ticket_id):
+        flash("✅ Ticket eliminado correctamente", "success")
+    else:
+        flash("❌ No se pudo eliminar el ticket", "error")
+    
+    admin_crud.db.session.close()
     return redirect(url_for('Mostrar_tickets'))
+
 
 @app.route("/modificar_ticket/<int:ticket_id>", methods=["GET", "POST"])
 def modificar_ticket(ticket_id):
@@ -185,24 +188,44 @@ def dashboard():
     if "admin" not in session:
         return redirect(url_for("mostrar_login_admin"))
 
+    # Conectar a la base de datos y obtener todos los municipios
     db_orm = Database_ORM()
     db_orm.connect()
     municipios = db_orm.query(Municipios).all()
 
+    # Obtener el municipio seleccionado desde los parámetros de la URL
     selected_municipio = request.args.get("municipio", None)
+
+    # Filtrar los tickets según el municipio seleccionado, o mostrar todos si no hay filtro
     if selected_municipio:
         tickets = db_orm.session.query(Tickets).filter(Tickets.MunicipioID == selected_municipio).all()
     else:
         tickets = db_orm.session.query(Tickets).all()
 
+    # Contar los tickets por estado
     pendientes = sum(1 for ticket in tickets if ticket.Estatus == 'Pendiente')
     resueltos = sum(1 for ticket in tickets if ticket.Estatus == 'Resuelto')
 
+    # Datos para el gráfico
     labels = ["Pendiente", "Resuelto"]
     counts = [pendientes, resueltos]
 
+    # Determinar el subtítulo de la gráfica según el municipio seleccionado
+    if selected_municipio:
+        municipio = db_orm.session.query(Municipios).filter(Municipios.MunicipioID == selected_municipio).first()
+        grafica_subtitulo = f"Tickets en {municipio.NombreMunicipio}"
+    else:
+        grafica_subtitulo = "Todos los Tickets"
+
     db_orm.close()
-    return render_template("dashboard.html", municipios=municipios, labels=json.dumps(labels), counts=json.dumps(counts))
+
+    # Renderizar la plantilla con los datos obtenidos
+    return render_template("dashboard.html", 
+                           municipios=municipios, 
+                           selected_municipio=selected_municipio,
+                           labels=json.dumps(labels), 
+                           counts=json.dumps(counts),
+                           grafica_subtitulo=grafica_subtitulo)
 
 @app.route('/logout')
 def logout():

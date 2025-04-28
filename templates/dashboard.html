@@ -29,6 +29,10 @@
             width: 60%;
             margin: 0 auto;
         }
+        #grafica-subtitulo {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -42,13 +46,16 @@
 
         <!-- Filtros -->
         <div class="filters">
-            <form method="get">
+            <form method="get" id="filter-form">
                 <div>
                     <label class="filter-label" for="municipio">Municipio:</label>
                     <select name="municipio" id="municipio">
                         <option value="">Todos</option>
                         {% for municipio in municipios %}
-                            <option value="{{ municipio.MunicipioID }}" {% if municipio.MunicipioID == request.args.get('municipio') %} selected {% endif %}>{{ municipio.NombreMunicipio }}</option>
+                            <option value="{{ municipio.MunicipioID }}" 
+                                {% if municipio.MunicipioID == selected_municipio %} selected {% endif %}>
+                                {{ municipio.NombreMunicipio }}
+                            </option>
                         {% endfor %}
                     </select>
                     <button type="submit">Filtrar</button>
@@ -56,29 +63,31 @@
             </form>
         </div>
 
+        <!-- Subtítulo dinámico -->
+        <h3 id="grafica-subtitulo">{{ grafica_subtitulo }}</h3>  <!-- Subtítulo para la gráfica -->
+
         <!-- Gráfico -->
         <div class="chart-container">
             <canvas id="statusChart"></canvas>
         </div>
     </div>
+
     <script>
-        // Asegúrate de que 'labels' y 'counts' son arrays válidos al ser pasados a JavaScript.
+        // Obtener las etiquetas (labels) y los conteos (counts) de los datos de tickets
         const chartLabels = {{ labels | safe }};
         const chartCounts = {{ counts | safe }};
         
-        // Verifica que las variables contienen datos antes de usarlas
-        console.log("Labels:", chartLabels);
-        console.log("Counts:", chartCounts);
-
+        // Configuración del gráfico
         if (Array.isArray(chartLabels) && Array.isArray(chartCounts) && chartLabels.length === chartCounts.length) {
             const ctx = document.getElementById('statusChart').getContext('2d');
+            
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: chartLabels,  // Usa el nombre nuevo
+                    labels: chartLabels,  // Usar las etiquetas de los municipios o status
                     datasets: [{
-                        label: 'Pendiente',
-                        data: chartCounts,  // Usa el nombre nuevo
+                        label: '{{ grafica_subtitulo }}',  // Usar el subtítulo como la leyenda del gráfico
+                        data: chartCounts,  // Datos correspondientes
                         backgroundColor: ['#ff6384', '#36a2eb'],
                         borderColor: ['#ff6384', '#36a2eb'],
                         borderWidth: 1
@@ -88,7 +97,7 @@
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'top',
+                            display: false,  // Deshabilitar la leyenda
                         },
                         tooltip: {
                             callbacks: {

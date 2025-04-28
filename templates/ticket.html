@@ -62,17 +62,17 @@
             <form name="registro" method="post" action="{{ url_for('add_aspirante') }}" onsubmit="return validaTicket()">
                 <div class="titulo">
                     <img src="/static/img/logo.png" alt="Secretaria de Educación" width="5900px" height="5000px">
-                    <h1>Ticket de Turno</h1>
+                    <h1 text-aling="center">Ticket de Turno</h1>
                 </div>
                 <div>
                     <label>Nombre completo de quien realizará el trámite:</label>
                     <input type="text" name="nombre_completo" id="nombre_completo" value="{{ tutor }}">
-
+                </div>
+                <h2 style="text-align: center;">Datos del Alumno</h2>
+                <div>
                     <label>CURP:</label>
                     <input type="text" name="curp" id="curp" value="{{ curp }}"><br><br>
-                </div>
 
-                <div>
                     <label>Nombre:</label>
                     <input type="text" name="nombres" id="nombres" value="{{ nombre }}">
 
@@ -147,6 +147,3 @@
     </script>
 </body>
 </html>
-
-
-

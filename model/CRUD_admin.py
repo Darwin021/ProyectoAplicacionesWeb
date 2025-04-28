@@ -24,6 +24,7 @@ class AdminCRUD:
             datos = []
             for ticket in tickets:
                 datos.append({
+                    'TicketID': ticket.TicketID,  # Aquí agregamos el TicketID
                     'Turno': ticket.Turno,
                     'Tutor': ticket.CURP,
                     'CURP': ticket.CURP,
@@ -151,6 +152,7 @@ class AdminCRUD:
             datos = []
             for ticket in tickets:
                 datos.append({
+                    'TicketID': ticket.TicketID,  # Aquí también agregamos el TicketID
                     'Turno': ticket.Turno,
                     'Tutor': ticket.CURP,
                     'CURP': ticket.CURP,
